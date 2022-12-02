@@ -1,4 +1,4 @@
-import Result from "./Result";
+import Result from "./Contracts/Result";
 
 export default class Bench {
   public async results(

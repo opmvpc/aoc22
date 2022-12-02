@@ -1,11 +1,11 @@
-import Solver from "../Solver";
-import parser from "./parser";
+import Solver from "../Contracts/Solver";
+import parser from "../Parser";
 
 class S implements Solver {
   public expectedResult: number[] = [45000, 199357];
   public day: number = 1;
   public part: number = 2;
-  public inputs: any[];
+  public inputs: Promise<string>[];
 
   constructor() {
     this.inputs = [];
@@ -14,12 +14,16 @@ class S implements Solver {
   }
 
   public async solve(number: number): Promise<any> {
-    const input = await this.inputs[number - 1];
-
-    return input
+    return (await this.inputs[number - 1])
+      .split("\n\n")
+      .map((block) =>
+        block
+          .split("\n")
+          .filter((number) => number !== "")
+          .map((number) => parseInt(number))
+      )
       .map((x: number[]) => x.reduce((acc: number, current: number) => acc + current))
-      .sort((a: number, b: number) => a - b)
-      .reverse()
+      .sort((a: number, b: number) => b - a)
       .slice(0, 3)
       .reduce((acc: number, current: number) => acc + current);
   }
