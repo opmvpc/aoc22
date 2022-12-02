@@ -14,41 +14,20 @@ class S implements Solver {
   }
 
   public async solve(number: number): Promise<any> {
-    return ((await this.inputs[number - 1]) as string)
-      .split("\n")
-      .filter((x) => x !== "")
-      .map((x) => x.split(" "))
-      .map((x) => {
-        let outcome = 0;
-        const x1 = x[0];
-        const x2 = x[1];
-        if (
-          (x1 === "A" && x2 === "X") ||
-          (x1 === "B" && x2 === "Y") ||
-          (x1 === "C" && x2 === "Z")
-        ) {
-          //draw
-          outcome = 3;
-        } else if (
-          (x1 === "A" && x2 === "Z") ||
-          (x1 === "B" && x2 === "X") ||
-          (x1 === "C" && x2 === "Y")
-        ) {
-          //lose
-          outcome = 0;
-        } else {
-          //win
-          outcome = 6;
-        }
+    const input = await this.inputs[number - 1];
+    const lines = input.split("\n");
+    let sum = 0;
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i] === "") {
+        break;
+      }
+      const line = lines[i];
+      const me = line.codePointAt(2)! - 88; // 88 is the code point of 'X'
+      const opponent = line.codePointAt(0)! - 65; // 65 is the code point of 'A'
+      sum += me + 1 + ((4 + me - opponent) % 3) * 3;
+    }
 
-        if (x2 === "X") {
-          return outcome + 1;
-        } else if (x2 === "Y") {
-          return outcome + 2;
-        }
-        return outcome + 3;
-      })
-      .reduce((acc, current) => acc + current);
+    return sum;
   }
 }
 
