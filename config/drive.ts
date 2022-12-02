@@ -160,5 +160,12 @@ export default driveConfig({
       root: Application.makePath("app/Domain/Solvers/"),
       serveFiles: false,
     },
+    front: {
+      driver: "local",
+      visibility: "public",
+      basePath: "front",
+      root: Application.makePath("front/dist"),
+      serveFiles: true,
+    },
   },
 });

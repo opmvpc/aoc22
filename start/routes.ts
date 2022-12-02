@@ -19,6 +19,7 @@
 */
 
 import Route from "@ioc:Adonis/Core/Route";
+import Drive from "@ioc:Adonis/Core/Drive";
 
 Route.get("/results/day/:day/part/:part/file/:file/times/:times", async (ctx) => {
   const { default: SolversController } = await import("App/Controllers/Http/SolversController");
@@ -28,3 +29,7 @@ Route.get("/results/day/:day/part/:part/file/:file/times/:times", async (ctx) =>
   .where("part", Route.matchers.number())
   .where("file", Route.matchers.number())
   .where("times", Route.matchers.number());
+
+Route.get("/", async () => {
+  return (await Drive.use("front").get("index.html")).toString();
+});

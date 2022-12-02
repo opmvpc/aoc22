@@ -2,8 +2,9 @@
 import { BenchApi } from "@/sevices/BenchApi";
 import type Result from "../types/Result";
 import { ref, type Ref } from "vue";
+import XButton from "./XButton.vue";
 
-const results: Ref<Map<string, Result>> = ref(new Map());
+const results: Ref<Map<string, Result | null>> = ref(new Map());
 const times: Ref<number> = ref(100);
 
 const run = async (day: number) => {
@@ -16,9 +17,7 @@ const run = async (day: number) => {
 const addResult = async (day: number, part: number, fileNumber: number) => {
   let result = await BenchApi.results(day, part, fileNumber, times.value);
   const key = getKey(day, part, fileNumber);
-  if (result !== null) {
-    results.value.set(key, result);
-  }
+  results.value.set(key, result);
 };
 
 const getKey = (day: number, part: number, fileNumber: number) => {
@@ -30,6 +29,16 @@ const runAll = () => {
     run(day);
   }
 };
+
+const resultClass = (result: Result | null | undefined) => {
+  if (result === undefined || result === null) {
+    return "";
+  }
+  if (result.result === result.expectedResult) {
+    return "text-blue-700";
+  }
+  return "text-red-700";
+};
 </script>
 
 <template>
@@ -39,67 +48,67 @@ const runAll = () => {
     <nav class="container mx-auto flex flex-col space-y-4">
       <h1 class="text-5xl text-gray-200 font-serif font-bold">🎄 AoC 2022</h1>
       <div
-        class="backdrop-blur-lg bg-white/30 shadow-md p-4 rounded-md text-gray-900 flex justify-between"
+        class="backdrop-blur-lg bg-white/30 hover:bg-white/40 shadow-md p-4 rounded-md text-gray-900 flex justify-between transition-all"
       >
         <div class="flex space-x-2">
           <label class="font-bold" for="times">Times</label>
           <input
-            class="border border-gray-300 rounded-md px-2 font-mono backdrop-blur-lg bg-white/10"
+            class="rounded-md px-2 font-mono backdrop-blur-lg bg-white/10 shadow-inner hover:bg-white/30 focus:bg-white/30 transition-all focus:outline-none"
             type="number"
             v-model="times"
           />
         </div>
-        <button
-          class="backdrop-blur-lg bg-white/10 px-4 py-1 text-sm rounded"
-          @click="runAll()"
-        >
-          Run all
-        </button>
+        <XButton @click="runAll()">Run all</XButton>
       </div>
       <div></div>
     </nav>
   </header>
-  <main class="container mx-auto">
+  <main class="container mx-auto px-3">
     <div class="flex flex-col space-y-4">
-      <ul class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <ul class="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
         <li
           v-for="day in 25"
-          class="backdrop-blur-lg bg-white/30 shadow-md p-4 rounded-md text-gray-900 flex flex-col space-y-4"
+          class="backdrop-blur-lg bg-white/30 hover:bg-white/40 shadow-md p-4 rounded-md text-gray-900 flex flex-col space-y-4 transition-all"
         >
           <div class="font-bold">Day {{ day }}</div>
           <div v-for="part in 2">
             <div v-for="fileNumber in 2">
-              <div class="grid grid-cols-5 gap-3">
+              <div class="grid grid-cols-6 gap-3">
                 <div>{{ part }} - {{ fileNumber }}</div>
                 <div class="col-span-3 font-mono tabular-nums text-right">
-                  {{
-                    results
-                      .get(getKey(day, part, fileNumber))
-                      ?.time.toFixed(6) ?? "?"
-                  }}
-                  ms
+                  <div
+                    class="text-red-700"
+                    v-if="
+                      results.has(getKey(day, part, fileNumber)) &&
+                      results.get(getKey(day, part, fileNumber)) === null
+                    "
+                  >
+                    not implemented
+                  </div>
+                  <span v-else>
+                    {{
+                      results
+                        .get(getKey(day, part, fileNumber))
+                        ?.time.toFixed(6) ?? "?"
+                    }}
+                    ms
+                  </span>
                 </div>
                 <div
-                  class="font-mono tabular-nums text-right"
+                  class="col-span-2 font-mono tabular-nums text-right"
                   :class="
-                    results.get(getKey(day, part, fileNumber))?.result ===
-                    results.get(getKey(day, part, fileNumber))?.expectedResult
-                      ? 'text-green-500'
-                      : 'text-red-500'
+                    resultClass(results.get(getKey(day, part, fileNumber)))
                   "
                 >
-                  {{ results.get(getKey(day, part, fileNumber))?.result }}
+                  {{
+                    results.get(getKey(day, part, fileNumber))?.result ?? "?"
+                  }}
                 </div>
               </div>
             </div>
           </div>
           <div class="flex justify-end">
-            <button
-              class="backdrop-blur-lg bg-white/10 px-4 py-1 text-sm rounded"
-              @click="run(day)"
-            >
-              Run
-            </button>
+            <XButton @click="run(day)">Run</XButton>
           </div>
         </li>
       </ul>
