@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "postinstall": "(cp -n .env.example .env || true) && cd front && (cp -n .env.example .env || true)",
-    "test": "node ace test",
+    "test": "node ace test --watch",
     "dev:back": "node ace serve --watch",
     "dev:front": "cd front && npx vite",
     "build:back": "node ace build --production",
