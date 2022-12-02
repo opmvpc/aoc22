@@ -6,7 +6,8 @@ on:
 jobs:
   gh-pages-deploy:
     name: Run tests
-    runs-on: ubuntu-lateststeps:
+    runs-on: ubuntu-lateststeps
+    steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
