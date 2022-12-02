@@ -13,7 +13,7 @@
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
     "dev": "concurrently npm:dev:*",
-    "build": "concurrently npm:build:*"
+    "build": "concurrently npm:build:back npm:build:front"
   },
   "eslintConfig": {
     "extends": [

@@ -2,7 +2,7 @@ import Solver from "../Contracts/Solver";
 import parser from "../Parser";
 
 class S implements Solver {
-  public expectedResult: number[] = [0, 0];
+  public expectedResult: number[] = [15, 9241];
   public day: number = 2;
   public part: number = 1;
   public inputs: Promise<string>[];
@@ -14,20 +14,41 @@ class S implements Solver {
   }
 
   public async solve(number: number): Promise<any> {
-    return Math.max(
-      ...((
-        (((await this.inputs[number - 1]) as string).split("\n\n") as string[]).map(
-          (block: string): number[] =>
-            (
-              (block.split("\n") as string[]).filter(
-                (number: string): boolean => number !== ""
-              ) as string[]
-            ).map((number: string): number => parseInt(number) as number) as number[]
-        ) as number[][]
-      ).map(
-        (x: number[]): number => x.reduce((acc: number, current: number) => acc + current) as number
-      ) as number[])
-    ) as number;
+    return ((await this.inputs[number - 1]) as string)
+      .split("\n")
+      .filter((x) => x !== "")
+      .map((x) => x.split(" "))
+      .map((x) => {
+        let outcome = 0;
+        const x1 = x[0];
+        const x2 = x[1];
+        if (
+          (x1 === "A" && x2 === "X") ||
+          (x1 === "B" && x2 === "Y") ||
+          (x1 === "C" && x2 === "Z")
+        ) {
+          //draw
+          outcome = 3;
+        } else if (
+          (x1 === "A" && x2 === "Z") ||
+          (x1 === "B" && x2 === "X") ||
+          (x1 === "C" && x2 === "Y")
+        ) {
+          //lose
+          outcome = 0;
+        } else {
+          //win
+          outcome = 6;
+        }
+
+        if (x2 === "X") {
+          return outcome + 1;
+        } else if (x2 === "Y") {
+          return outcome + 2;
+        }
+        return outcome + 3;
+      })
+      .reduce((acc, current) => acc + current);
   }
 }
 
