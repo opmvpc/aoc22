@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "postinstall": "(cp -n .env.example .env || true) && cd front && (cp -n .env.example .env || true)",
+    "postinstall": "(cp -n .env.example .env || true) && (cp -n front/.env.example front/.env || true)",
     "test": "node ace test --watch",
     "dev:back": "node ace serve --watch",
     "dev:front": "cd front && npx vite",
@@ -13,7 +13,8 @@
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
     "dev": "concurrently npm:dev:*",
-    "build": "concurrently npm:build:back npm:build:front"
+    "build": "npm run build:back && npm run build:front",
+    "postbuild": "copyfiles -E ./app/**/*.txt build && copyfiles -E front/dist/**/* build && copyfiles -s .env build"
   },
   "eslintConfig": {
     "extends": [
@@ -50,6 +51,7 @@
     "@types/source-map-support": "^0.5.6",
     "adonis-preset-ts": "^2.1.0",
     "concurrently": "^7.6.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-adonis": "^2.1.1",
