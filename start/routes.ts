@@ -21,14 +21,21 @@
 import Route from "@ioc:Adonis/Core/Route";
 import Drive from "@ioc:Adonis/Core/Drive";
 
-Route.get("/results/day/:day/part/:part/file/:file/times/:times", async (ctx) => {
-  const { default: SolversController } = await import("App/Controllers/Http/SolversController");
-  return new SolversController().results(ctx);
-})
-  .where("day", Route.matchers.number())
-  .where("part", Route.matchers.number())
-  .where("file", Route.matchers.number())
-  .where("times", Route.matchers.number());
+Route.group(() => {
+  Route.get("/results/day/:day/part/:part/file/:file/times/:times", async (ctx) => {
+    const { default: SolversController } = await import("App/Controllers/Http/SolversController");
+    return new SolversController().results(ctx);
+  })
+    .where("day", Route.matchers.number())
+    .where("part", Route.matchers.number())
+    .where("file", Route.matchers.number())
+    .where("times", Route.matchers.number());
+
+  Route.get("/days", async (ctx) => {
+    const { default: SolversController } = await import("App/Controllers/Http/SolversController");
+    return new SolversController().days(ctx);
+  });
+}).prefix("/api");
 
 Route.get("/", async () => {
   return (await Drive.use("front").get("index.html")).toString();

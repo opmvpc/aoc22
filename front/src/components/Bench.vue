@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { BenchApi } from "@/sevices/BenchApi";
 import type Result from "../types/Result";
-import { ref, type Ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import XButton from "./XButton.vue";
 
 const results: Ref<Map<string, Result | null>> = ref(new Map());
 const times: Ref<number> = ref(100);
+
+const days = ref(0);
 
 const run = async (day: number) => {
   addResult(day, 1, 1);
@@ -25,7 +27,7 @@ const getKey = (day: number, part: number, fileNumber: number) => {
 };
 
 const runAll = () => {
-  for (let day = 1; day <= 25; day++) {
+  for (let day = 1; day <= days.value; day++) {
     run(day);
   }
 };
@@ -39,6 +41,11 @@ const resultClass = (result: Result | null | undefined) => {
   }
   return "text-red-700";
 };
+
+onMounted(async () => {
+  days.value = await BenchApi.days();
+  runAll();
+});
 </script>
 
 <template>
@@ -46,14 +53,26 @@ const resultClass = (result: Result | null | undefined) => {
     class="mb-4 sticky top-0 left-0 z-10 backdrop-blur-md pt-4 shadow-xl w-full px-3"
   >
     <nav class="container mx-auto flex flex-col space-y-4">
-      <h1 class="text-5xl text-gray-200 font-serif font-bold">🎄 AoC 2022</h1>
+      <div class="flex justify-between items-center">
+        <h1 class="text-5xl text-gray-200 font-serif font-bold">🎄 AoC 2022</h1>
+        <div>
+          <a
+            href="https://github.com/opmvpc/aoc22"
+            class="text-gray-400 hover:text-gray-300 transition-all"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            github
+          </a>
+        </div>
+      </div>
       <div
-        class="backdrop-blur-lg bg-white/30 hover:bg-white/40 shadow-md p-4 rounded-md text-gray-900 flex justify-between transition-all"
+        class="bg-white/30 hover:bg-white/40 shadow-md p-4 rounded-md text-gray-900 flex justify-between transition-all"
       >
         <div class="flex space-x-2">
           <label class="font-bold" for="times">Times</label>
           <input
-            class="rounded-md px-2 font-mono backdrop-blur-lg bg-white/10 shadow-inner hover:bg-white/30 focus:bg-white/30 transition-all focus:outline-none"
+            class="rounded-md px-2 font-mono bg-white/10 shadow-inner hover:bg-white/30 focus:bg-white/30 transition-all focus:outline-none"
             type="number"
             v-model="times"
           />
@@ -67,8 +86,8 @@ const resultClass = (result: Result | null | undefined) => {
     <div class="flex flex-col space-y-4">
       <ul class="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
         <li
-          v-for="day in 25"
-          class="backdrop-blur-lg bg-white/30 hover:bg-white/40 shadow-md p-4 rounded-md text-gray-900 flex flex-col space-y-4 transition-all"
+          v-for="day in days"
+          class="bg-white/30 hover:bg-white/40 shadow-md p-4 rounded-md text-gray-900 flex flex-col space-y-4 transition-all"
         >
           <div class="font-bold">Day {{ day }}</div>
           <div v-for="part in 2">

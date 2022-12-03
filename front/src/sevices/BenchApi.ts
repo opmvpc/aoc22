@@ -35,4 +35,15 @@ export class BenchApi {
       data.time
     );
   }
+
+  public static async days(): Promise<number> {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/days`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    return Number(data.days);
+  }
 }
