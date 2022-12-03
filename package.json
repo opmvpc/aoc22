@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "postinstall": "(cp -n .env.example .env || true) && (cp -n front/.env.example front/.env || true)",
+    "installfront": "cd front && npm install",
+    "postinstall": "npm run installfront && (cp -n .env.example .env || true) && (cp -n front/.env.example front/.env || true)",
     "test": "node ace test --watch",
     "dev:back": "node ace serve --watch",
     "dev:front": "cd front && npx vite",

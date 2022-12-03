@@ -1,8 +1,9 @@
 # AoC 2022
 
 Project for the Advent of Code 2022
-Adonisjs server
-Vuejs client
+
+- Adonisjs server
+- Vuejs client
 
 ## Setup
 
@@ -24,8 +25,16 @@ npm install
 npm run dev
 ```
 
+then open `http://127.0.0.1:5173/front/`
+
 ## Build for production
 
 ```bash
 npm run build
+```
+
+## Run tests
+
+```bash
+npm run test
 ```
