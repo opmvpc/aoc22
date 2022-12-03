@@ -18,31 +18,38 @@ class S implements Solver {
     const lines = input.split("\n").filter((x) => x !== "");
     const results: number[] = [];
     for (let groupIndex = 0; groupIndex < lines.length; groupIndex += 3) {
-      let compartment1: number[] = [];
-      let compartment2: number[] = [];
-      let compartment3: number[] = [];
+      const compartments: Set<number>[] = [];
       let char = 0;
-      let line = lines[groupIndex];
-      for (let index = 0; index < line.length; index++) {
-        char = line.codePointAt(index) ?? 0;
-        compartment1.push(char >= 97 ? char - 96 : char - 38);
-      }
-      line = lines[groupIndex + 1];
-      for (let index = 0; index < line.length; index++) {
-        char = line.codePointAt(index) ?? 0;
-        compartment2.push(char >= 97 ? char - 96 : char - 38);
-      }
-      line = lines[groupIndex + 2];
-      for (let index = 0; index < line.length; index++) {
-        char = line.codePointAt(index) ?? 0;
-        compartment3.push(char >= 97 ? char - 96 : char - 38);
+      let line = "";
+      let lineIndex = 0;
+      for (let i = 0; i < 3; i++) {
+        lineIndex = groupIndex + i;
+        line = lines[lineIndex];
+        for (let j = 0; j < line.length; j++) {
+          char = line.codePointAt(j)!;
+          if (compartments[i] === undefined) {
+            compartments[i] = new Set();
+          }
+          compartments[i].add(char >= 97 ? char - 96 : char - 38);
+        }
       }
 
-      const intersection = new Set(
-        compartment1.filter((x) => compartment2.includes(x) && compartment3.includes(x))
-      ).values();
+      const setIntersection = (setA: Set<number>, setB: Set<number>): Set<number> => {
+        let intersection = new Set<number>();
 
-      results.push(intersection.next().value ?? 0);
+        for (const elem of setB) {
+          if (setA.has(elem)) {
+            intersection.add(elem);
+          }
+        }
+        return intersection;
+      };
+
+      results.push(
+        setIntersection(compartments[0], setIntersection(compartments[1], compartments[2]))
+          .values()
+          .next().value ?? 0
+      );
     }
 
     return results.reduce((a, b) => a + b, 0);
