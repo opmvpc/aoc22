@@ -14,29 +14,22 @@ class S implements Solver {
   }
 
   public async solve(number: number): Promise<any> {
-    const input = await this.inputs[number - 1];
-    const lines = input.split("\n").filter((x) => x !== "");
+    const lines = (await this.inputs[number - 1]).split("\n");
     let count: number = 0;
 
-    const toBinaryStringRepresentation = (elve: string): bigint => {
-      const [min, max] = elve.split("-").map((x) => Number(x));
-      let binaryStringRepresentation = "0b";
-      for (let i = 1; i <= 99; i++) {
-        binaryStringRepresentation += i >= min && i <= max ? "1" : "0";
-      }
-      return BigInt(binaryStringRepresentation);
-    };
-
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      const [elve1, elve2] = line.split(",");
-      const binElve1 = toBinaryStringRepresentation(elve1);
-      const binElve2 = toBinaryStringRepresentation(elve2);
-      const overlap = binElve1 & binElve2;
-
-      if (overlap === binElve1 || overlap === binElve2) {
-        count++;
+      if (lines[i] === "") {
+        break;
       }
+      const [elve1, elve2] = lines[i].split(",");
+      let [min1, max1] = elve1.split("-");
+      let [min2, max2] = elve2.split("-");
+      let binElve1 =
+        ~(~BigInt(0) << BigInt(parseInt(max1) - parseInt(min1) + 1)) << BigInt(99 - parseInt(max1));
+      let binElve2 =
+        ~(~BigInt(0) << BigInt(parseInt(max2) - parseInt(min2) + 1)) << BigInt(99 - parseInt(max2));
+      const overlap = binElve1 & binElve2;
+      count += overlap === binElve1 || overlap === binElve2 ? 1 : 0;
     }
     return count;
   }

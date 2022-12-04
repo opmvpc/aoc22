@@ -2,7 +2,7 @@ import Solver from "../Contracts/Solver";
 import parser from "../Parser";
 
 class S implements Solver {
-  public expectedResult: number[] = [0, 0];
+  public expectedResult: number[] = [4, 867];
   public day: number = 4;
   public part: number = 2;
   public inputs: Promise<string>[];
@@ -14,45 +14,24 @@ class S implements Solver {
   }
 
   public async solve(number: number): Promise<any> {
-    const input = await this.inputs[number - 1];
-    const lines = input.split("\n").filter((x) => x !== "");
-    const results: number[] = [];
-    for (let groupIndex = 0; groupIndex < lines.length; groupIndex += 3) {
-      const compartments: Set<number>[] = [];
-      let char = 0;
-      let line = "";
-      let lineIndex = 0;
-      for (let i = 0; i < 3; i++) {
-        lineIndex = groupIndex + i;
-        line = lines[lineIndex];
-        for (let j = 0; j < line.length; j++) {
-          char = line.codePointAt(j)!;
-          if (compartments[i] === undefined) {
-            compartments[i] = new Set();
-          }
-          compartments[i].add(char >= 97 ? char - 96 : char - 38);
-        }
+    const lines = (await this.inputs[number - 1]).split("\n");
+    let count: number = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i] === "") {
+        break;
       }
-
-      const setIntersection = (setA: Set<number>, setB: Set<number>): Set<number> => {
-        let intersection = new Set<number>();
-
-        for (const elem of setB) {
-          if (setA.has(elem)) {
-            intersection.add(elem);
-          }
-        }
-        return intersection;
-      };
-
-      results.push(
-        setIntersection(compartments[0], setIntersection(compartments[1], compartments[2]))
-          .values()
-          .next().value ?? 0
-      );
+      const [elve1, elve2] = lines[i].split(",");
+      let [min1, max1] = elve1.split("-");
+      let [min2, max2] = elve2.split("-");
+      let binElve1 =
+        ~(~BigInt(0) << BigInt(parseInt(max1) - parseInt(min1) + 1)) << BigInt(99 - parseInt(max1));
+      let binElve2 =
+        ~(~BigInt(0) << BigInt(parseInt(max2) - parseInt(min2) + 1)) << BigInt(99 - parseInt(max2));
+      const overlap = binElve1 & binElve2;
+      count += overlap > 0 ? 1 : 0;
     }
-
-    return results.reduce((a, b) => a + b, 0);
+    return count;
   }
 }
 
