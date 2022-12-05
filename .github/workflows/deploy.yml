@@ -1,14 +1,20 @@
-name: deploy
-needs: test
+name: Deploy app
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Run tests"]
+    types:
+      - completed
 jobs:
   deploy:
     name: Run tests
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "npm"
+          cache-dependency-path: package-lock.json
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh/
@@ -20,11 +26,6 @@ jobs:
           SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
           SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
       - name: Deploy
-        - uses: actions/checkout@v3
-        - uses: actions/setup-node@v3
-          with:
-            node-version: 16
-            cache: "npm"
-            cache-dependency-path: package-lock.json
-        - run: npm ci
-        - run: pm2 deploy ecosystem.config.js production
+        run: |
+          npm ci
+          pm2 deploy ecosystem.config.js production
