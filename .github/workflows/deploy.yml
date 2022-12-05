@@ -28,4 +28,4 @@ jobs:
         run: |
           npm ci
           npm i -g pm2
-          pm2 deploy ecosystem.config.github.js production
+          pm2 deploy ecosystem.github.config.js production
