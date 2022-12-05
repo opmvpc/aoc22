@@ -1,10 +1,11 @@
-name: Run tests
+name: deploy
+needs: test
 on:
   push:
     branches:
       - main
 jobs:
-  test:
+  deploy:
     name: Run tests
     runs-on: ubuntu-latest
     steps:

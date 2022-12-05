@@ -44,7 +44,7 @@ const corsConfig: CorsConfig = {
   |                     one of the above values.
   |
   */
-  origin: "http://localhost,http://aoc22.tsix.be/,https://aoc22.tsix.be/",
+  origin: "http://localhost:5173,http://aoc22.tsix.be/,https://aoc22.tsix.be/",
 
   /*
   |--------------------------------------------------------------------------
