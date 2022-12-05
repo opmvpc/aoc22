@@ -16,7 +16,7 @@ module.exports = {
     production: {
       "user": "pm2",
       "host": ["tsix.be"],
-      "key": "./deploy.key",
+      "key": "~/.ssh/deploy.key",
       "ref": "origin/main",
       "repo": "git@github.com:opmvpc/aoc22.git",
       "path": "/var/www/pm2/aoc22",
