@@ -29,3 +29,4 @@ jobs:
           npm ci
           npm i -g pm2
           pm2 deploy ecosystem.github.config.js production
+

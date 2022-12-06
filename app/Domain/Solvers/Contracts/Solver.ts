@@ -1,5 +1,5 @@
 export default interface Solver {
-  expectedResult: number[];
+  expectedResult: any[];
   day: number;
   part: number;
   inputs: any[];
