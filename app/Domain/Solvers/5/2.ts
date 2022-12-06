@@ -2,7 +2,7 @@ import Solver from "../Contracts/Solver";
 import parser from "../Parser";
 
 class S implements Solver {
-  public expectedResult: string[] = ["MCD", "??"];
+  public expectedResult: string[] = ["MCD", "RNLFDJMCT"];
   public day: number = 5;
   public part: number = 2;
   public inputs: Promise<string>[];
@@ -50,7 +50,6 @@ class S implements Solver {
       const fromStack = stacks[parseInt(from) - 1];
       const toStack = stacks[parseInt(to) - 1];
       const temp = fromStack.splice(fromStack.length - parseInt(number));
-      console.log(temp);
 
       toStack.push(...temp);
     }
