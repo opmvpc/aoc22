@@ -24,9 +24,11 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
           SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
-      - name: Deploy with pm2
+      - name: Build
         run: |
           npm ci
+          npm run build
+      - name: Deploy with pm2
+        run: |
           npm i -g pm2
           pm2 deploy ecosystem.github.config.js production
-
