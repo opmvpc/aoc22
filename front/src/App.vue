@@ -10,7 +10,7 @@ import Bench from "./components/Bench.vue";
 
 <style>
 .background {
-  background: radial-gradient(ellipse at top, rgb(20 184 166), rgb(17 24 39)),
-    radial-gradient(ellipse at bottom, rgb(29 78 216), rgb(17 24 39));
+  background: radial-gradient(ellipse at top, rgb(249 115 22), transparent),
+    radial-gradient(ellipse at bottom, rgb(217 70 239), transparent);
 }
 </style>

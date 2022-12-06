@@ -54,11 +54,14 @@ onMounted(async () => {
   >
     <nav class="container mx-auto flex flex-col space-y-4">
       <div class="flex justify-between items-center">
-        <h1 class="text-5xl text-gray-200 font-serif font-bold">🎄 AoC 2022</h1>
+        <div class="flex items-center space-x-4">
+          <img class="w-20 h-20" src="logo.png" alt="avatar" />
+          <h1 class="text-5xl text-gray-200 font-serif font-bold">AoC 2022</h1>
+        </div>
         <div>
           <a
             href="https://github.com/opmvpc/aoc22"
-            class="text-gray-400 hover:text-gray-300 transition-all"
+            class="text-gray-200 hover:text-gray-400 transition-all"
             target="_blank"
             rel="noopener noreferrer"
           >
