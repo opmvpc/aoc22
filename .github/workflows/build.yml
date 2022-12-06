@@ -1,12 +1,7 @@
-name: Run tests
-on:
-  workflow_run:
-    workflows: ["Build app"]
-    types:
-      - completed
+name: Build app
+on: [push, pull_request]
 jobs:
-  test:
-    name: Run tests
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -15,5 +10,7 @@ jobs:
           node-version: 16
           cache: "npm"
           cache-dependency-path: package-lock.json
-      - run: npm ci
-      - run: node ace test
+      - name: Build
+        run: |
+          npm ci
+          npm run build
