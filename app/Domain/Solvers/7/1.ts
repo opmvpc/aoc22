@@ -2,7 +2,7 @@ import Solver from "../Contracts/Solver";
 import parser from "../Parser";
 
 class S implements Solver {
-  public expectedResult: number[] = [95437, 0];
+  public expectedResult: number[] = [95437, 1348005];
   public day: number = 7;
   public part: number = 1;
   public inputs: Promise<string>[];
