@@ -12,5 +12,5 @@ export abstract class AbstractSolver implements SolverContract {
     this.inputs.push(await parser.parse(this.day, 2));
   }
 
-  public abstract solve(number: number): Promise<any>;
+  public abstract solve(number: number): any;
 }

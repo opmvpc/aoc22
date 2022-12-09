@@ -22,7 +22,7 @@ export default class Bench {
     await solver.parse();
 
     const start = performance.now();
-    const result = await solver.solve(fileNumber);
+    const result = solver.solve(fileNumber);
     // console.log(day, part, fileNumber,result);
 
     const end = performance.now();

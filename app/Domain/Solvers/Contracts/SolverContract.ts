@@ -3,6 +3,6 @@ export default interface SolverContract {
   day: number;
   part: number;
   inputs: string[];
-  solve(number: number): Promise<any>;
+  solve(number: number): any;
   parse(): Promise<void>;
 }

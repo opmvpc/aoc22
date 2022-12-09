@@ -34,7 +34,7 @@ test("solver - day {day} part {part} file {file}")
   .with(async () => await getSolvers())
   .run(async ({ assert }, testCase: TestCase) => {
     assert.equal(
-      await testCase.solver.solve(testCase.file),
+      testCase.solver.solve(testCase.file),
       testCase.solver.expectedResult[testCase.file - 1]
     );
   });

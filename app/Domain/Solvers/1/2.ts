@@ -5,7 +5,7 @@ export default class S extends AbstractSolver {
   public day: number = 1;
   public part: number = 2;
 
-  public async solve(number: number): Promise<any> {
+  public solve(number: number): any {
     return this.inputs[number - 1]
       .split("\n\n")
       .map((block) =>

@@ -5,7 +5,7 @@ export default class S extends AbstractSolver {
   public day: number = 8;
   public part: number = 2;
 
-  public async solve(number: number): Promise<number> {
+  public solve(number: number): any {
     const lines = this.inputs[number - 1]
       .split("\n")
       .filter((l) => l.length > 0)
