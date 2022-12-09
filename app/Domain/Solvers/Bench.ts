@@ -17,10 +17,14 @@ export default class Bench {
   }
 
   public async run(day: number, part: number, fileNumber: number): Promise<Result> {
-    const solver = await import(`./${day}/${part}`);
+    const { default: TSolver } = await import(`App/Domain/Solvers/${day}/${part}.ts`);
+    const solver = new TSolver();
+    await solver.parse();
 
     const start = performance.now();
-    const result = await solver.default.solve(fileNumber);
+    const result = await solver.solve(fileNumber);
+    // console.log(day, part, fileNumber,result);
+
     const end = performance.now();
 
     return new Result(
@@ -28,7 +32,7 @@ export default class Bench {
       part,
       fileNumber,
       result,
-      solver.default.expectedResult[fileNumber - 1],
+      solver.expectedResult[fileNumber - 1],
       end - start
     );
   }

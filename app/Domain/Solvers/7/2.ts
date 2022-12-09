@@ -1,21 +1,13 @@
-import Solver from "../Contracts/Solver";
-import parser from "../Parser";
+import { AbstractSolver } from "../Contracts/AbstractSolver";
 
-class S implements Solver {
+export default class S extends AbstractSolver {
   public expectedResult: number[] = [24933642, 12785886];
   public day: number = 7;
   public part: number = 2;
-  public inputs: Promise<string>[];
-
-  constructor() {
-    this.inputs = [];
-    this.inputs.push(parser.parse(this.day, 1));
-    this.inputs.push(parser.parse(this.day, 2));
-  }
 
   public async solve(number: number): Promise<number> {
     const fs = new FileSystem();
-    const lines = (await this.inputs[number - 1]).split("\n");
+    const lines = this.inputs[number - 1].split("\n");
     for (let index = 0; index < lines.length; index++) {
       if (lines[index].length === 0) {
         continue;
@@ -153,5 +145,3 @@ class FileSystem {
     return this.root.toString();
   }
 }
-
-export default new S();

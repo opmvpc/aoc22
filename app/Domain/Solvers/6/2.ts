@@ -1,20 +1,11 @@
-import Solver from "../Contracts/Solver";
-import parser from "../Parser";
-
-class S implements Solver {
+import { AbstractSolver } from "../Contracts/AbstractSolver";
+export default class S extends AbstractSolver {
   public expectedResult: number[] = [19, 3217];
   public day: number = 6;
   public part: number = 2;
-  public inputs: Promise<string>[];
-
-  constructor() {
-    this.inputs = [];
-    this.inputs.push(parser.parse(this.day, 1));
-    this.inputs.push(parser.parse(this.day, 2));
-  }
 
   public async solve(number: number): Promise<number> {
-    const line = await (await this.inputs[number - 1]).split("").map((x) => x.charCodeAt(0));
+    const line = this.inputs[number - 1].split("").map((x) => x.charCodeAt(0));
     for (let index = 13; index < line.length; index++) {
       const sequence = line.slice(index - 13, index + 1);
       if (sequence.filter((x, i, a) => a.indexOf(x) !== i).length > 0) {
@@ -27,5 +18,3 @@ class S implements Solver {
     return 0;
   }
 }
-
-export default new S();

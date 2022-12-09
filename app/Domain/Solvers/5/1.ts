@@ -1,20 +1,12 @@
-import Solver from "../Contracts/Solver";
-import parser from "../Parser";
+import { AbstractSolver } from "../Contracts/AbstractSolver";
 
-class S implements Solver {
+export default class S extends AbstractSolver {
   public expectedResult: string[] = ["CMZ", "HNSNMTLHQ"];
   public day: number = 5;
   public part: number = 1;
-  public inputs: Promise<string>[];
-
-  constructor() {
-    this.inputs = [];
-    this.inputs.push(parser.parse(this.day, 1));
-    this.inputs.push(parser.parse(this.day, 2));
-  }
 
   public async solve(number: number): Promise<string> {
-    const lines = (await this.inputs[number - 1]).split("\n\n");
+    const lines = this.inputs[number - 1].split("\n\n");
     const stacks: string[][] = [];
 
     const config = lines[0].split("\n");
@@ -66,5 +58,3 @@ class S implements Solver {
     return result;
   }
 }
-
-export default new S();

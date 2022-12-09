@@ -1,7 +1,8 @@
-export default interface Solver {
+export default interface SolverContract {
   expectedResult: any[];
   day: number;
   part: number;
-  inputs: any[];
+  inputs: string[];
   solve(number: number): Promise<any>;
+  parse(): Promise<void>;
 }

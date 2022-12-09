@@ -1,22 +1,14 @@
-import Solver from "../Contracts/Solver";
-import parser from "../Parser";
+import { AbstractSolver } from "../Contracts/AbstractSolver";
 
-class S implements Solver {
+export default class S extends AbstractSolver {
   public expectedResult: number[] = [24000, 67450];
   public day: number = 1;
   public part: number = 1;
-  public inputs: Promise<string>[];
-
-  constructor() {
-    this.inputs = [];
-    this.inputs.push(parser.parse(this.day, 1));
-    this.inputs.push(parser.parse(this.day, 2));
-  }
 
   public async solve(number: number): Promise<any> {
     return Math.max(
       ...((
-        (((await this.inputs[number - 1]) as string).split("\n\n") as string[]).map(
+        ((this.inputs[number - 1] as string).split("\n\n") as string[]).map(
           (block: string): number[] =>
             (
               (block.split("\n") as string[]).filter(
@@ -30,5 +22,3 @@ class S implements Solver {
     ) as number;
   }
 }
-
-export default new S();
